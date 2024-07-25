@@ -1,0 +1,49 @@
+---
+- hosts: ws
+  become: yes
+  gather_facts: yes
+  ignore_errors: yes
+
+  vars:
+    user_name: TMadame
+    group: terraform
+
+  vars_files:
+    playbook2_var.yml  
+
+  tasks:
+    - name: check server uptime
+      command: "{{time_up}}"
+      register: reg_time
+
+    - name: list directory
+      command: ls
+
+    - name: check kernel version
+      command: uname -r
+      register: kernel_output
+    
+    - name: create user
+      user:
+        name: "{{user_name}}"
+
+    - name: create group
+      group:
+        name: "{{group}}"
+
+    - name: Read data
+      debug:
+        msg: "Hello from my playbook"
+
+    - name: Read data 2
+      debug:
+        var: time_up
+
+    - name: Read data 3
+      debug:
+        var: kernel_output.stdout
+
+    - name: display time up
+      debug:
+        var: reg_time.stdout[:19]
+    

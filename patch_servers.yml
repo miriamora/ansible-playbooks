@@ -1,0 +1,15 @@
+---
+- name: Patch servers
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: patch Debian servers
+      apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: patch RedHat servers
+      yum:
+        update_cache: yes
+      when: ansible_os_family == "RedHat"

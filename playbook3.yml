@@ -1,0 +1,29 @@
+---
+- name: 3rd play
+  hosts: ws
+  become: true
+  gather_facts: true
+  ignore_errors: true
+  tasks:
+    - name: Packages install
+      yum:
+        name: "{{item}}"
+        state: present
+      with_items:
+        - wget
+        - finger
+        - git
+        - docker
+        - httpd
+      loop:
+        - ntp
+        - httpd
+    - name: Packages install eg 2
+      yum:
+        name: ["wget", "finger"]
+        state: present
+    - name: Package install eg 3
+      yum:
+        name:
+          - wget
+          - httpd

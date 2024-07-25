@@ -1,0 +1,60 @@
+---
+- name: Install nginx and create user
+  hosts: all
+  become: yes
+  gather_facts: yes  # Needed for conditionals based on OS family
+
+  tasks:
+    - name: Install httpd on RedHat-based systems
+      yum:
+        name: httpd
+        state: present
+      when: ansible_os_family == 'RedHat'
+      tags:
+        - apt-get
+
+    - name: start httpd daemon
+      when: ansible_os_family == 'RedHat'
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Install nginx on Debian-based systems
+      apt:
+        name: nginx
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Create user Sir Matthews
+      user:
+        name: jmatthews
+        comment: "Sir John Matthews"
+        shell: /sbin/nologin
+
+    - name: Create group cloudteam
+      group:
+        name: cloudteam
+        state: present
+
+    - name: Create index file
+      file:
+        path: /var/www/html/index.html
+        state: touch
+      register: file_output
+
+    - name: read file output
+      debug:
+        var: file_output.diff.before.path
+
+    - name: create directory
+      file:
+        state: directory
+        path: /tmp/os
+    
+    - name: copy into html - inline content
+      copy:
+        content: '<h1>This is created using ansible by Moi!</h1>'
+        dest: file_output.diff.before.path
+
+  
