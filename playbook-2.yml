@@ -9,7 +9,7 @@
     group: terraform
 
   vars_files:
-    playbook2_var.yml  
+    playbook2_var.yml
 
   tasks:
     - name: check server uptime
@@ -46,4 +46,3 @@
     - name: display time up
       debug:
         var: reg_time.stdout[:19]
-    

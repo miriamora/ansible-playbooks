@@ -1,0 +1,8 @@
+---
+- name: run role
+  hosts: windows
+  roles: 
+    - role: link
+      my_url: https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.9.3.tar.xz
+      dest_path: C:\Users\Administrator\Desktop\test-dir3
+    
