@@ -8,6 +8,7 @@ pipeline{
                 sh 'zip -r ansible-$BUILD_ID.zip * --exclude Jenkinsfile'
             }
         }
+        
         stage('upload artifact to jfrog'){
             steps{
                 sh 'curl -uadmin:AP5Wqb4z8e2FpTCsrqdrpHBVngW -T ansible-$BUILD_ID.zip \
