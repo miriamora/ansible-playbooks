@@ -16,7 +16,7 @@
         - git
         - unzip
         - passwd
-        - docker.io
+        - docker
         - lsof
         - wget
         #- java-11-openjdk
