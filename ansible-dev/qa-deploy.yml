@@ -1,0 +1,25 @@
+---
+- name: play1
+  hosts: all
+  become: true
+  become_user: root
+  gather_facts: true
+  ignore_errors: true
+
+  tasks:
+    - name: delete old artifacts
+      file:
+        path: rm -rf /opt/qa/spg/*.jar
+        state: absent
+    - name: get list of open files, get PID
+      shell: lsof -i 8082
+      register: PID_output
+    - name: kill running app 
+      shell: kill -9 ${PID_output}
+      when: PID_output.stdout != ''
+
+      #double-check task above!!
+    - name: download new artifack
+      get_url:
+        path:
+        dest: 
