@@ -16,7 +16,7 @@
         - git
         - unzip
         - passwd
-        - docker
+        - docker.io
         - lsof
         - wget
         #- java-11-openjdk
@@ -25,7 +25,7 @@
     - name: install packages (apt)
       apt:
         state: present
-        name: [git, unzip, passwd, docker, lsof, wget]
+        name: [git, unzip, passwd, docker.io, lsof, wget]
       when: ansible_os_family == 'Debian'
 
     - name: create directory
