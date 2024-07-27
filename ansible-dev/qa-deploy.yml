@@ -12,14 +12,19 @@
         path: rm -rf /opt/qa/spg/*.jar
         state: absent
     - name: get list of open files, get PID
-      shell: lsof -i 8082
+      shell: lsof -i -t 8082
       register: PID_output
     - name: kill running app 
-      shell: kill -9 ${PID_output}
+      shell: "kill -9 {{PID_output.stdout}} "
       when: PID_output.stdout != ''
 
       #double-check task above!!
-    - name: download new artifack
+    - name: download new artifact
       get_url:
-        path:
-        dest: 
+        url: http://52.200.226.47:8081/artifactory/ansible/ansible-25.zip
+        dest: /opt/qa/spg
+        url_username: admin
+        url_password: jfrog123
+
+    - name: run the app 
+      shell: nohup java -jar /opt/qa/spg/*.jar > /opt/qa/spg.log 2>&1 &
