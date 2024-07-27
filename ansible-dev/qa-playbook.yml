@@ -44,5 +44,3 @@
        name: docker
        state: started
        enabled: true
-
-       #number 2 test
