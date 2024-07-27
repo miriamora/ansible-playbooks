@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: ws
   become: yes
   become_user: root 
   ignore_errors: yes
@@ -12,26 +12,17 @@
     - name: Get the PID
       shell:  lsof -t -i :8082
       register: pid_output
-      tags:
-        - s
-
-    - name: see PID value
-      debug:
-        var: pid_output
-      tags:
-        - t
     
     - name: Kill Running App
       shell: "kill -9 {{ pid_output.stdout }}"
       when: pid_output.stdout != ''
 
-      #double-check task above!!
-    - name: download new artifact
+    - name: Download New Artifact  
       get_url:
-        url: http://52.200.226.47:8081/artifactory/ansible/ansible-25.zip
+        url: http://34.201.161.49:8081/artifactory/geolocation/geo/bio_17.jar
         dest: /opt/qa/spg
         url_username: admin
-        url_password: jfrog123
+        url_password: password
 
-    - name: run the app 
+    - name: Run the App
       shell: nohup java -jar /opt/qa/spg/*.jar > /opt/qa/spg.log 2>&1 &
