@@ -19,13 +19,14 @@
         - docker
         - lsof
         - wget
-        #- java-11-openjdk
+        - java-11-openjdk
 
       when: ansible_os_family == 'RedHat'
+
     - name: install packages (apt)
       apt:
         state: present
-        name: [git, unzip, passwd, docker.io, lsof, wget]
+        name: [git, unzip, passwd, docker.io, lsof, wget, openjdk-11-jdk]
       when: ansible_os_family == 'Debian'
 
     - name: create directory
