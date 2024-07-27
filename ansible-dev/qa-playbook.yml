@@ -1,0 +1,48 @@
+---
+- name: play1
+  hosts: all
+  become: true
+  become_user: root
+  gather_facts: true
+  ignore_errors: true
+
+  tasks:
+    - name: install packages (yum)
+      yum:
+        state: present
+        name: "{{item}}"
+
+      loop:
+        - git
+        - unzip
+        - passwd
+        - docker
+        - lsof
+        - wget
+        #- java-11-openjdk
+
+      when: ansible_os_family == 'RedHat'
+    - name: install packages (apt)
+      apt:
+        state: present
+        name: [git, unzip, passwd, docker, lsof, wget]
+      when: ansible_os_family == 'Debian'
+
+    - name: create directory
+      file:
+        path: /opt/qa/spg
+        state: directory
+        mode: '0755'
+
+    - name: create file
+      file:
+        path: /opt/qa/spg/spg.log
+        state: touch
+
+    - name: start and enable docker
+      service:
+       name: docker
+       state: started
+       enabled: true
+
+       #number 2 test
